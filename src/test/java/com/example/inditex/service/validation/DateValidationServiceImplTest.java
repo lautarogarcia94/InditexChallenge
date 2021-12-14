@@ -1,4 +1,4 @@
-package com.example.inditex.service.validation.impl;
+package com.example.inditex.service.validation;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.example.inditex.constant.Constants;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.service.validation.impl.DateValidationServiceImpl;
 import com.example.inditex.utils.TestObjectBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
