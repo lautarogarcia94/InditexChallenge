@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.example.inditex.entity.Prices;
 import com.example.inditex.service.marshaller.impl.MarshallerServiceImpl;
+import com.example.inditex.utils.TestObjectBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,23 +37,8 @@ class MarshallerServiceImplTest {
     @BeforeAll
     void setUp() {
         openMocks(this);
-        price = buildPrice();
+        price = TestObjectBuilder.buildPrice();
     }
-
-    private Prices buildPrice() {
-        price = new Prices();
-        price.setId(123);
-        price.setBrandId(5);
-        price.setStartDate(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
-        price.setEndDate(LocalDateTime.of(2020, 8, 13, 23, 0, 0));
-        price.setPriceList(1);
-        price.setProductId(123456);
-        price.setPriority(5);
-        price.setPrice(455.50);
-        price.setCurr("EUR");
-        return price;
-    }
-
 
     @Test
     void shouldMarshallPriceSuccessfully() throws JsonProcessingException {

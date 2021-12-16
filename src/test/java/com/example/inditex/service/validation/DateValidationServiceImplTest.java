@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import com.example.inditex.constant.Constants;
 import com.example.inditex.model.PriceIdentifier;
 import com.example.inditex.service.validation.impl.DateValidationServiceImpl;
 import com.example.inditex.utils.TestObjectBuilder;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.ValidationException;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,8 +26,7 @@ class DateValidationServiceImplTest {
 
     @BeforeAll
     void setUp() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Constants.DATE_TIME_PATTERN);
-        dateValidationService = new DateValidationServiceImpl(dateTimeFormatter);
+        dateValidationService = new DateValidationServiceImpl();
         priceIdentifier = TestObjectBuilder.buildPriceIdentifier();
     }
 

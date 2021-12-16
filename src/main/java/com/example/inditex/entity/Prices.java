@@ -1,5 +1,6 @@
 package com.example.inditex.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -20,9 +21,11 @@ public class Prices {
     @Column(name = "brand_id")
     private int brandId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     @Column(name = "end_date")
     private LocalDateTime endDate;
 

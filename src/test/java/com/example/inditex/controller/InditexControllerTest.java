@@ -1,6 +1,9 @@
 package com.example.inditex.controller;
 
+import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.service.database.DatabaseService;
+import com.example.inditex.service.marshaller.MarshallerService;
 import com.example.inditex.service.validation.ValidationService;
 import com.example.inditex.utils.TestObjectBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,14 +17,14 @@ import org.springframework.http.ResponseEntity;
 import javax.xml.bind.ValidationException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InditexControllerTest {
 
     private PriceIdentifier priceIdentifier;
+    private Prices price;
 
     @InjectMocks
     private InditexController inditexController;
@@ -29,21 +32,31 @@ class InditexControllerTest {
     @Mock
     private ValidationService mockDateValidationService;
 
+    @Mock
+    private DatabaseService mockDatabaseService;
+
+    @Mock
+    private MarshallerService mockMarshallerService;
+
     @BeforeAll
     void setUp() {
         openMocks(this);
 
         priceIdentifier = TestObjectBuilder.buildPriceIdentifier();
+        price = TestObjectBuilder.buildPrice();
     }
 
     @Test
     void shouldReturnSuccessfully() throws ValidationException {
-        String message = "Request has been received";
+        String marshallMessage = "{price marshalled string}";
         doNothing().when(mockDateValidationService).validate(priceIdentifier);
+        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(price);
+        when(mockMarshallerService.marshallPrice(price)).thenReturn(marshallMessage);
+
         ResponseEntity<String> response = inditexController.getProductPrice(priceIdentifier);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(message, response.getBody());
+        assertEquals(marshallMessage, response.getBody());
     }
 
     @Test
@@ -53,6 +66,19 @@ class InditexControllerTest {
         ResponseEntity<String> response = inditexController.getProductPrice(priceIdentifier);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(message, response.getBody());
+    }
+
+    @Test
+    void shouldFailProcessWhenMarshallerReturnsNull() throws ValidationException {
+        String message = "Something went wrong";
+        doNothing().when(mockDateValidationService).validate(priceIdentifier);
+        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(price);
+        when(mockMarshallerService.marshallPrice(price)).thenReturn(null);
+
+        ResponseEntity<String> response = inditexController.getProductPrice(priceIdentifier);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals(message, response.getBody());
     }
 }

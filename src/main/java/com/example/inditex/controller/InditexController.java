@@ -1,6 +1,9 @@
 package com.example.inditex.controller;
 
+import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.service.database.DatabaseService;
+import com.example.inditex.service.marshaller.MarshallerService;
 import com.example.inditex.service.validation.ValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,8 @@ import javax.xml.bind.ValidationException;
 public class InditexController {
 
     private final ValidationService dateValidationService;
+    private final DatabaseService databaseService;
+    private final MarshallerService marshallerService;
 
     @GetMapping(value = "inditex/getProductPrice", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -36,7 +41,14 @@ public class InditexController {
             return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("Request has been received", HttpStatus.OK);
+        Prices validPrice = databaseService.getPrice(priceIdentifier);
+        String marshalledPrice = marshallerService.marshallPrice(validPrice);
+
+        if (marshalledPrice == null) {
+            return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity<>(marshalledPrice, HttpStatus.OK);
+        }
     }
 
 }
