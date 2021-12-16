@@ -1,8 +1,8 @@
 package com.example.inditex.service.marshaller;
 
-import com.example.inditex.entity.Prices;
+import com.example.inditex.model.SelectedPrice;
 
 public interface MarshallerService {
 
-    String marshallPrice(Prices price);
+    String marshallPrice(SelectedPrice price);
 }

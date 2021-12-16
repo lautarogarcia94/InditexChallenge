@@ -1,7 +1,7 @@
 package com.example.inditex.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,17 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "prices")
 public class Prices {
 
     @Id
     @Column(name = "id")
-    private double id;
+    private Integer id;
 
     @Column(name = "brand_id")
-    private int brandId;
+    private Integer brandId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd-HH:mm:ss")
     @Column(name = "start_date")
@@ -30,16 +34,16 @@ public class Prices {
     private LocalDateTime endDate;
 
     @Column(name = "price_list")
-    private int priceList;
+    private Integer priceList;
 
     @Column(name = "product_id")
-    private int productId;
+    private Integer productId;
 
     @Column(name = "priority")
-    private int priority;
+    private Integer priority;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "curr")
     private String curr;

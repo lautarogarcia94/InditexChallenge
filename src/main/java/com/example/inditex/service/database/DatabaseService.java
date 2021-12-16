@@ -1,10 +1,10 @@
 package com.example.inditex.service.database;
 
-import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.model.SelectedPrice;
 
 public interface DatabaseService {
 
 
-    Prices getPrice(PriceIdentifier priceIdentifier);
+    SelectedPrice getPrice(PriceIdentifier priceIdentifier);
 }

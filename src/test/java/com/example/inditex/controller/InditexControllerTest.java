@@ -1,7 +1,7 @@
 package com.example.inditex.controller;
 
-import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.model.SelectedPrice;
 import com.example.inditex.service.database.DatabaseService;
 import com.example.inditex.service.marshaller.MarshallerService;
 import com.example.inditex.service.validation.ValidationService;
@@ -24,7 +24,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class InditexControllerTest {
 
     private PriceIdentifier priceIdentifier;
-    private Prices price;
+    private SelectedPrice selectedPrice;
 
     @InjectMocks
     private InditexController inditexController;
@@ -43,15 +43,15 @@ class InditexControllerTest {
         openMocks(this);
 
         priceIdentifier = TestObjectBuilder.buildPriceIdentifier();
-        price = TestObjectBuilder.buildPrice();
+        selectedPrice = TestObjectBuilder.buildSelectedPrice();
     }
 
     @Test
     void shouldReturnSuccessfully() throws ValidationException {
         String marshallMessage = "{price marshalled string}";
         doNothing().when(mockDateValidationService).validate(priceIdentifier);
-        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(price);
-        when(mockMarshallerService.marshallPrice(price)).thenReturn(marshallMessage);
+        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(selectedPrice);
+        when(mockMarshallerService.marshallPrice(selectedPrice)).thenReturn(marshallMessage);
 
         ResponseEntity<String> response = inditexController.getProductPrice(priceIdentifier);
 
@@ -73,8 +73,8 @@ class InditexControllerTest {
     void shouldFailProcessWhenMarshallerReturnsNull() throws ValidationException {
         String message = "Something went wrong";
         doNothing().when(mockDateValidationService).validate(priceIdentifier);
-        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(price);
-        when(mockMarshallerService.marshallPrice(price)).thenReturn(null);
+        when(mockDatabaseService.getPrice(priceIdentifier)).thenReturn(selectedPrice);
+        when(mockMarshallerService.marshallPrice(selectedPrice)).thenReturn(null);
 
         ResponseEntity<String> response = inditexController.getProductPrice(priceIdentifier);
 

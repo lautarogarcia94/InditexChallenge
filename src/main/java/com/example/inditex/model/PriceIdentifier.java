@@ -1,13 +1,17 @@
 package com.example.inditex.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PriceIdentifier {
 
     @Min(value = 0, message = "Brand ID should be bigger than 0")

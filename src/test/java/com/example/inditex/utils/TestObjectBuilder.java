@@ -2,30 +2,42 @@ package com.example.inditex.utils;
 
 import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.model.SelectedPrice;
 
 import java.time.LocalDateTime;
 
 public class TestObjectBuilder {
 
     public static PriceIdentifier buildPriceIdentifier() {
-        PriceIdentifier priceIdentifier = new PriceIdentifier();
-        priceIdentifier.setApplicationDate("2020-06-15-16.00.00");
-        priceIdentifier.setProductId(10);
-        priceIdentifier.setBrandId(4);
-        return priceIdentifier;
+        return PriceIdentifier.builder()
+                .applicationDate("2020-06-15-16.00.00")
+                .brandId(4)
+                .productId(10)
+                .build();
     }
 
     public static Prices buildPrice() {
-        Prices price = new Prices();
-        price.setId(123);
-        price.setBrandId(5);
-        price.setStartDate(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
-        price.setEndDate(LocalDateTime.of(2020, 8, 13, 23, 0, 0));
-        price.setPriceList(1);
-        price.setProductId(123456);
-        price.setPriority(5);
-        price.setPrice(455.50);
-        price.setCurr("EUR");
-        return price;
+        return Prices.builder()
+                .id(123)
+                .brandId(5)
+                .startDate(LocalDateTime.of(2020, 1, 1, 0, 0, 0))
+                .endDate(LocalDateTime.of(2020, 8, 13, 23, 0, 0))
+                .priceList(1)
+                .productId(123456)
+                .priority(5)
+                .price(455.5)
+                .curr("EUR")
+                .build();
+    }
+
+    public static SelectedPrice buildSelectedPrice() {
+        return SelectedPrice.builder()
+                .price(455.5)
+                .priceList(1)
+                .brandId(5)
+                .startDate(LocalDateTime.of(2020, 1, 1, 0, 0, 0))
+                .endDate(LocalDateTime.of(2020, 8, 13, 23, 0, 0))
+                .productId(123456)
+                .build();
     }
 }

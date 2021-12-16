@@ -1,7 +1,7 @@
 package com.example.inditex.controller;
 
-import com.example.inditex.entity.Prices;
 import com.example.inditex.model.PriceIdentifier;
+import com.example.inditex.model.SelectedPrice;
 import com.example.inditex.service.database.DatabaseService;
 import com.example.inditex.service.marshaller.MarshallerService;
 import com.example.inditex.service.validation.ValidationService;
@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import javax.xml.bind.ValidationException;
 @RequiredArgsConstructor
 @Slf4j
 @RestController
+@Component
 public class InditexController {
 
     private final ValidationService dateValidationService;
@@ -41,8 +43,9 @@ public class InditexController {
             return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        Prices validPrice = databaseService.getPrice(priceIdentifier);
-        String marshalledPrice = marshallerService.marshallPrice(validPrice);
+        SelectedPrice selectedPrice = databaseService.getPrice(priceIdentifier);
+        String marshalledPrice = marshallerService.marshallPrice(selectedPrice);
+        log.info("The selected price is: {}", marshalledPrice);
 
         if (marshalledPrice == null) {
             return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
